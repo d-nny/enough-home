@@ -9,4 +9,6 @@ bucket = "./assets"
 [observability.logs]
 enabled = true
 
+[vars]
+COMING_SOON = "TRUE"  # Set to "TRUE" to enable coming soon mode
 

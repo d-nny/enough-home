@@ -101,8 +101,10 @@ function generateComingSoonPage() {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Coming Soon - ENOUGHGAMBLING</title>
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
+      
       body {
-        font-family: Arial, sans-serif;
+        font-family: 'Montserrat', Arial, sans-serif;
         margin: 0;
         padding: 0;
         display: flex;
@@ -110,74 +112,319 @@ function generateComingSoonPage() {
         align-items: center;
         min-height: 100vh;
         text-align: center;
-        background-color: #f5f5f5;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
         padding: 2rem 1rem;
+        color: #333;
+        overflow-x: hidden;
       }
+      
       .logo {
-        margin-bottom: 2rem;
+        margin-bottom: 3rem;
+        animation: fadeIn 1.2s ease-in-out;
       }
+      
       .logo span.black {
         color: #000;
-        font-weight: bold;
-        font-size: 2.5rem;
+        font-weight: 700;
+        font-size: 3rem;
+        letter-spacing: 1px;
       }
+      
       .logo span.red {
         color: #FF0000;
-        font-weight: bold;
-        font-size: 2.5rem;
+        font-weight: 700;
+        font-size: 3rem;
+        letter-spacing: 1px;
       }
+      
       .message {
         font-size: 1.2rem;
-        margin-bottom: 2rem;
-        max-width: 600px;
+        margin-bottom: 3rem;
+        max-width: 700px;
         padding: 0 20px;
+        animation: slideUp 0.8s ease-out;
+        line-height: 1.6;
       }
+      
+      .message h1 {
+        font-size: 2.8rem;
+        margin-bottom: 1.5rem;
+        color: #222;
+        position: relative;
+        display: inline-block;
+      }
+      
+      .message h1:after {
+        content: "";
+        position: absolute;
+        width: 60%;
+        height: 4px;
+        background-color: #FF0000;
+        bottom: -10px;
+        left: 20%;
+        border-radius: 2px;
+      }
+      
+      .countdown {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin: 2rem 0 3rem;
+        animation: fadeIn 1.5s ease;
+      }
+      
+      .countdown-item {
+        text-align: center;
+      }
+      
+      .countdown-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: #FF0000;
+        color: white;
+        width: 80px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(255, 0, 0, 0.2);
+      }
+      
+      .countdown-label {
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #555;
+      }
+      
+      .notify-container {
+        width: 100%;
+        max-width: 500px;
+        margin-bottom: 4rem;
+        animation: slideUp 1s ease-out;
+      }
+      
+      .notify-form {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 1rem;
+      }
+      
+      .notify-input {
+        flex: 1;
+        padding: 0.8rem 1rem;
+        border: 2px solid #ddd;
+        border-radius: 4px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+      
+      .notify-input:focus {
+        border-color: #FF0000;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.1);
+      }
+      
+      .notify-btn {
+        background-color: #FF0000;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.5rem;
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
+      }
+      
+      .notify-btn:hover {
+        background-color: #cc0000;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      
       .support-resources {
         margin-top: 3rem;
         width: 100%;
-        max-width: 900px;
+        max-width: 1100px;
+        animation: fadeIn 1.5s ease-out;
       }
+      
       .support-resources h2 {
-        margin-bottom: 2rem;
-        color: #333;
+        margin-bottom: 2.5rem;
+        color: #222;
+        font-size: 2rem;
+        position: relative;
+        display: inline-block;
       }
+      
+      .support-resources h2:after {
+        content: "";
+        position: absolute;
+        width: 40%;
+        height: 3px;
+        background-color: #FF0000;
+        bottom: -10px;
+        left: 30%;
+        border-radius: 2px;
+      }
+      
       .resources-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 2rem;
         width: 100%;
       }
+      
       .resource-card {
         background-color: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        padding: 1.5rem;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        padding: 1.8rem;
         text-align: left;
-        transition: transform 0.3s ease;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        border-top: 4px solid #FF0000;
       }
+      
+      .resource-card:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255, 0, 0, 0.05) 0%, rgba(255, 255, 255, 0) 50%);
+        z-index: 0;
+      }
+      
       .resource-card:hover {
-        transform: translateY(-5px);
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
       }
+      
       .resource-logo {
         height: 80px;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 1rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 1;
       }
+      
       .resource-logo img {
         max-height: 80px;
         max-width: 100%;
         object-fit: contain;
+        transition: transform 0.3s ease;
       }
+      
+      .resource-card:hover .resource-logo img {
+        transform: scale(1.05);
+      }
+      
       .resource-card h3 {
-        color: #333;
-        margin-bottom: 0.5rem;
+        color: #222;
+        margin-bottom: 0.8rem;
+        font-weight: 600;
+        position: relative;
+        z-index: 1;
       }
+      
       .resource-card p {
-        color: #666;
+        color: #555;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 1;
+      }
+      
+      .visit-site-btn {
+        display: inline-block;
+        padding: 0.6rem 1.2rem;
+        background-color: #f8f9fa;
+        color: #FF0000;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: 600;
         font-size: 0.9rem;
-        line-height: 1.5;
+        transition: all 0.3s ease;
+        border: 1px solid #eee;
+        position: relative;
+        z-index: 1;
+      }
+      
+      .visit-site-btn:hover {
+        background-color: #FF0000;
+        color: white;
+        border-color: #FF0000;
+      }
+      
+      .social-links {
+        margin-top: 3rem;
+        display: flex;
+        justify-content: center;
+        gap: 1.5rem;
+      }
+      
+      .social-icon {
+        width: 40px;
+        height: 40px;
+        background-color: #333;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        color: white;
+        text-decoration: none;
+        font-size: 1.2rem;
+      }
+      
+      .social-icon:hover {
+        transform: translateY(-3px);
+        background-color: #FF0000;
+      }
+      
+      @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      
+      @keyframes slideUp {
+        from { 
+          opacity: 0; 
+          transform: translateY(20px);
+        }
+        to { 
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      @media (max-width: 768px) {
+        .logo span.black, .logo span.red {
+          font-size: 2.5rem;
+        }
+        
+        .message h1 {
+          font-size: 2.2rem;
+        }
+        
+        .countdown {
+          gap: 1rem;
+        }
+        
+        .countdown-number {
+          width: 60px;
+          height: 60px;
+          font-size: 2rem;
+        }
       }
     </style>
   </head>
@@ -185,10 +432,38 @@ function generateComingSoonPage() {
     <div class="logo">
       <span class="black">ENOUGH</span><span class="red">GAMBLING</span>
     </div>
+    
     <div class="message">
       <h1>Coming Soon</h1>
       <p>We're working hard to bring you resources and support for those affected by problem gambling.</p>
-      <p>Our site is under construction but will be launching soon.</p>
+      <p>Our site is under construction but will be launching soon to provide comprehensive support and tools.</p>
+    </div>
+    
+    <div class="countdown">
+      <div class="countdown-item">
+        <div class="countdown-number" id="countdown-days">00</div>
+        <div class="countdown-label">Days</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-number" id="countdown-hours">00</div>
+        <div class="countdown-label">Hours</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-number" id="countdown-minutes">00</div>
+        <div class="countdown-label">Minutes</div>
+      </div>
+      <div class="countdown-item">
+        <div class="countdown-number" id="countdown-seconds">00</div>
+        <div class="countdown-label">Seconds</div>
+      </div>
+    </div>
+    
+    <div class="notify-container">
+      <h3>Get notified when we launch</h3>
+      <div class="notify-form">
+        <input type="email" class="notify-input" placeholder="Enter your email">
+        <button class="notify-btn">Notify Me</button>
+      </div>
     </div>
     
     <div class="support-resources">
@@ -196,45 +471,101 @@ function generateComingSoonPage() {
       <div class="resources-grid">
         <div class="resource-card">
           <div class="resource-logo">
-            <img src="/images/chapter-one.svg" alt="Chapter One - Gambling Support">
+            <img src="/assets/images/chapter-one.svg" alt="Chapter One - Gambling Support">
           </div>
           <h3>Chapter One - Gambling Support</h3>
           <p>Provides specialized counseling and therapy services for individuals affected by problem gambling with a personalized recovery approach.</p>
+          <a href="https://chapterone.org.uk/" class="visit-site-btn" target="_blank">Visit Website</a>
         </div>
         
         <div class="resource-card">
           <div class="resource-logo">
-            <img src="/images/gamlearn.png" alt="GamLearn">
+            <img src="/assets/images/gamlearn.png" alt="GamLearn">
           </div>
           <h3>GamLearn</h3>
           <p>An educational platform offering free resources to understand gambling addiction through interactive courses and informational materials.</p>
+          <a href="https://www.gamlearn.org.uk/" class="visit-site-btn" target="_blank">Visit Website</a>
         </div>
         
         <div class="resource-card">
           <div class="resource-logo">
-            <img src="/images/gamfam.png" alt="GamFam">
+            <img src="/assets/images/gamfam.png" alt="GamFam">
           </div>
           <h3>GamFam</h3>
           <p>Specializes in supporting families and loved ones of problem gamblers, providing guidance on effective communication and establishing healthy boundaries.</p>
+          <a href="https://gamfam.org.uk/" class="visit-site-btn" target="_blank">Visit Website</a>
         </div>
         
         <div class="resource-card">
           <div class="resource-logo">
-            <img src="/images/gamban.jpg" alt="Gamban">
+            <img src="/assets/images/gamban.jpg" alt="Gamban">
           </div>
           <h3>Gamban</h3>
           <p>Offers powerful software that blocks access to gambling websites and applications across all devices, providing an essential tool for recovery.</p>
+          <a href="https://gamban.com/" class="visit-site-btn" target="_blank">Visit Website</a>
         </div>
         
         <div class="resource-card">
           <div class="resource-logo">
-            <img src="/images/talkbanstop.png" alt="TalkBanStop">
+            <img src="/assets/images/talkbanstop.png" alt="TalkBanStop">
           </div>
           <h3>TalkBanStop</h3>
           <p>A partnership initiative combining free gambling blocking software, expert counseling services, and practical self-exclusion for comprehensive support.</p>
+          <a href="https://www.talkbanstop.org.uk/" class="visit-site-btn" target="_blank">Visit Website</a>
         </div>
       </div>
     </div>
+    
+    <div class="social-links">
+      <a href="#" class="social-icon">f</a>
+      <a href="#" class="social-icon">t</a>
+      <a href="#" class="social-icon">in</a>
+      <a href="#" class="social-icon">i</a>
+    </div>
+    
+    <script>
+      // Countdown timer
+      const countdownDate = new Date();
+      countdownDate.setDate(countdownDate.getDate() + 30); // Set launch date to 30 days from now
+      
+      function updateCountdown() {
+        const now = new Date().getTime();
+        const distance = countdownDate - now;
+        
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        document.getElementById("countdown-days").textContent = days.toString().padStart(2, '0');
+        document.getElementById("countdown-hours").textContent = hours.toString().padStart(2, '0');
+        document.getElementById("countdown-minutes").textContent = minutes.toString().padStart(2, '0');
+        document.getElementById("countdown-seconds").textContent = seconds.toString().padStart(2, '0');
+      }
+      
+      // Update the countdown every second
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+      
+      // Form submission handling
+      document.querySelector('.notify-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.querySelector('.notify-input').value;
+        if(email) {
+          alert('Thank you! We will notify you when we launch.');
+          document.querySelector('.notify-input').value = '';
+        }
+      });
+      
+      // Handle button click separately
+      document.querySelector('.notify-btn').addEventListener('click', function() {
+        const email = document.querySelector('.notify-input').value;
+        if(email) {
+          alert('Thank you! We will notify you when we launch.');
+          document.querySelector('.notify-input').value = '';
+        }
+      });
+    </script>
   </body>
   </html>`;
 }

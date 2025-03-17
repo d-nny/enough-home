@@ -197,13 +197,6 @@ function assemblePage(navbar, content, footer, title = 'ENOUGHGAMBLING - Support
 }
 
 /**
- * Main event handler for the worker
- */
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request, event.env));
-});
-
-/**
  * Parse the path to determine the content type and specific content to serve
  * @param {string} pathname - URL path
  * @returns {object} - Content type and specific content identifier
@@ -261,91 +254,108 @@ async function fetchComponent(path) {
   }
 }
 
-/**
- * Handle the request
- * @param {Request} request - The incoming request
- * @param {Object} env - Environment variables
- * @returns {Response} - The response
- */
-async function handleRequest(request, env) {
-  const url = new URL(request.url);
-  let pathname = url.pathname;
-  
-  // Check if the path uses the override mechanism
-  const isOverride = pathname.startsWith('/override/');
-  if (isOverride) {
-    // Remove the /override part from the pathname
-    pathname = pathname.replace('/override', '');
-  }
-  
-  // Check if we're in coming soon mode and not using override
-  const comingSoon = env.COMING_SOON === 'TRUE';
-  if (comingSoon && !isOverride) {
-    return new Response(generateComingSoonPage(), {
-      status: 200,
-      headers: {
-        'Content-Type': 'text/html',
-        'Cache-Control': 'public, max-age=3600'
-      }
-    });
-  }
-  
-  try {
-    const contentPath = parseContentPath(pathname);
+// Export the Worker in the Modules format
+export default {
+  /**
+   * Main fetch handler for the worker
+   * @param {Request} request - The incoming request
+   * @param {Object} env - Environment variables
+   * @param {Object} ctx - Context
+   * @returns {Response} - The response
+   */
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    let pathname = url.pathname;
     
-    // Handle static file requests
-    if (contentPath.type === 'static') {
-      // Use the built-in asset handling
-      const assetUrl = new URL(contentPath.path, url.origin);
-      const response = await fetch(assetUrl.toString());
-      
-      if (response.status === 404) {
-        // File not found, return 404
-        return new Response(generate404Page(), {
-          status: 404,
-          headers: {
-            'Content-Type': 'text/html',
-            'Cache-Control': 'public, max-age=3600'
-          }
-        });
-      }
-      
-      // Get appropriate content type based on file extension
-      const extension = contentPath.path.split('.').pop().toLowerCase();
-      const contentType = contentTypes[extension] || 'text/plain';
-      
-      // Create a new response with custom headers
-      const newResponse = new Response(response.body, response);
-      newResponse.headers.set('Content-Type', contentType);
-      newResponse.headers.set('Cache-Control', 'public, max-age=86400');
-      
-      return newResponse;
+    // Check if the path uses the override mechanism
+    const isOverride = pathname.startsWith('/override/');
+    if (isOverride) {
+      // Remove the /override part from the pathname
+      pathname = pathname.replace('/override', '');
     }
     
-    // Handle page requests by assembling components
-    if (contentPath.type === 'page') {
-      // Get the navbar and footer components
-      const [navbar, footer] = await Promise.all([
-        fetchComponent('/TopNavBar.html'),
-        fetchComponent('/footer.html')
-      ]);
+    // Check if we're in coming soon mode and not using override
+    const comingSoon = env.COMING_SOON === 'TRUE';
+    if (comingSoon && !isOverride) {
+      return new Response(generateComingSoonPage(), {
+        status: 200,
+        headers: {
+          'Content-Type': 'text/html',
+          'Cache-Control': 'public, max-age=3600'
+        }
+      });
+    }
+    
+    try {
+      const contentPath = parseContentPath(pathname);
       
-      if (!navbar || !footer) {
-        throw new Error('Could not load page template components');
+      // Handle static file requests
+      if (contentPath.type === 'static') {
+        // Use the built-in asset handling
+        const assetUrl = new URL(contentPath.path, url.origin);
+        const response = await fetch(assetUrl.toString());
+        
+        if (response.status === 404) {
+          // File not found, return 404
+          return new Response(generate404Page(), {
+            status: 404,
+            headers: {
+              'Content-Type': 'text/html',
+              'Cache-Control': 'public, max-age=3600'
+            }
+          });
+        }
+        
+        // Get appropriate content type based on file extension
+        const extension = contentPath.path.split('.').pop().toLowerCase();
+        const contentType = contentTypes[extension] || 'text/plain';
+        
+        // Create a new response with custom headers
+        const newResponse = new Response(response.body, response);
+        newResponse.headers.set('Content-Type', contentType);
+        newResponse.headers.set('Cache-Control', 'public, max-age=86400');
+        
+        return newResponse;
       }
       
-      let content;
-      let pageTitle = 'ENOUGHGAMBLING';
-      
-      // Load the appropriate content based on the page ID
-      if (contentPath.id === 'home') {
-        content = await fetchComponent('/homepage.html');
-        pageTitle += ' - Support For Problem Gambling';
-      } else {
-        // Check if a specific page template exists
-        content = await fetchComponent(`/pages/${contentPath.id}.html`);
+      // Handle page requests by assembling components
+      if (contentPath.type === 'page') {
+        // Get the navbar and footer components
+        const [navbar, footer] = await Promise.all([
+          fetchComponent('/TopNavBar.html'),
+          fetchComponent('/footer.html')
+        ]);
         
-        // If no specific page template, return 404
+        if (!navbar || !footer) {
+          throw new Error('Could not load page template components');
+        }
+        
+        let content;
+        let pageTitle = 'ENOUGHGAMBLING';
+        
+        // Load the appropriate content based on the page ID
+        if (contentPath.id === 'home') {
+          content = await fetchComponent('/homepage.html');
+          pageTitle += ' - Support For Problem Gambling';
+        } else {
+          // Check if a specific page template exists
+          content = await fetchComponent(`/pages/${contentPath.id}.html`);
+          
+          // If no specific page template, return 404
+          if (!content) {
+            return new Response(generate404Page(), {
+              status: 404,
+              headers: {
+                'Content-Type': 'text/html',
+                'Cache-Control': 'public, max-age=3600'
+              }
+            });
+          }
+          
+          pageTitle += ` - ${contentPath.id.charAt(0).toUpperCase() + contentPath.id.slice(1).replace(/-/g, ' ')}`;
+        }
+        
+        // If content still couldn't be loaded, return 404
         if (!content) {
           return new Response(generate404Page(), {
             status: 404,
@@ -356,13 +366,16 @@ async function handleRequest(request, env) {
           });
         }
         
-        pageTitle += ` - ${contentPath.id.charAt(0).toUpperCase() + contentPath.id.slice(1).replace(/-/g, ' ')}`;
-      }
-      
-      // If content still couldn't be loaded, return 404
-      if (!content) {
-        return new Response(generate404Page(), {
-          status: 404,
+        // Assemble the complete page
+        const assembledPage = assemblePage(
+          navbar,
+          content,
+          footer,
+          pageTitle
+        );
+        
+        // Return the assembled page
+        return new Response(assembledPage, {
           headers: {
             'Content-Type': 'text/html',
             'Cache-Control': 'public, max-age=3600'
@@ -370,116 +383,100 @@ async function handleRequest(request, env) {
         });
       }
       
-      // Assemble the complete page
-      const assembledPage = assemblePage(
-        navbar,
-        content,
-        footer,
-        pageTitle
-      );
-      
-      // Return the assembled page
-      return new Response(assembledPage, {
-        headers: {
-          'Content-Type': 'text/html',
-          'Cache-Control': 'public, max-age=3600'
+      // Handle location requests
+      if (contentPath.type === 'location') {
+        // Here we would normally make a call to a location service
+        // For now, we'll show a placeholder page that can be replaced with actual service binding later
+        
+        const postcode = contentPath.id;
+        
+        // Verify postcode format (basic UK postcode validation)
+        const postcodeRegex = /^[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}$/i;
+        if (!postcodeRegex.test(postcode)) {
+          return new Response(`
+            <div>
+              <h1>Invalid Postcode Format</h1>
+              <p>The postcode "${postcode}" does not appear to be valid. Please check and try again.</p>
+            </div>
+          `, {
+            status: 400,
+            headers: {
+              'Content-Type': 'text/html',
+            }
+          });
         }
-      });
-    }
-    
-    // Handle location requests
-    if (contentPath.type === 'location') {
-      // Here we would normally make a call to a location service
-      // For now, we'll show a placeholder page that can be replaced with actual service binding later
-      
-      const postcode = contentPath.id;
-      
-      // Verify postcode format (basic UK postcode validation)
-      const postcodeRegex = /^[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}$/i;
-      if (!postcodeRegex.test(postcode)) {
-        return new Response(`
-          <div>
-            <h1>Invalid Postcode Format</h1>
-            <p>The postcode "${postcode}" does not appear to be valid. Please check and try again.</p>
+        
+        // Get the navbar and footer
+        const [navbar, footer] = await Promise.all([
+          fetchComponent('/TopNavBar.html'),
+          fetchComponent('/footer.html')
+        ]);
+        
+        if (!navbar || !footer) {
+          throw new Error('Could not load page template components');
+        }
+        
+        // Create a placeholder content block (this would be replaced by service binding later)
+        const locationContent = `
+          <div class="main-content">
+            <div class="info-box">
+              <h1>Support Services Near ${postcode.toUpperCase()}</h1>
+              <p>This page will display gambling support services near your location.</p>
+              <p>In the future, this content will be dynamically loaded from a location service binding.</p>
+            </div>
+            
+            <div class="resources-grid">
+              <div class="resource-card">
+                <h3>Local Support Group</h3>
+                <p>Example support group near ${postcode.toUpperCase()}</p>
+                <p>Address: 123 Example Street</p>
+                <p>Phone: 01234 567890</p>
+              </div>
+              <div class="resource-card">
+                <h3>Counseling Center</h3>
+                <p>Example counseling service within 5 miles of ${postcode.toUpperCase()}</p>
+                <p>Address: 456 Example Road</p>
+                <p>Phone: 01234 567891</p>
+              </div>
+            </div>
           </div>
-        `, {
-          status: 400,
+        `;
+        
+        // Assemble the complete page
+        const assembledPage = assemblePage(
+          navbar,
+          locationContent,
+          footer,
+          `ENOUGHGAMBLING - Support Services Near ${postcode.toUpperCase()}`
+        );
+        
+        // Return the assembled page
+        return new Response(assembledPage, {
           headers: {
             'Content-Type': 'text/html',
+            'Cache-Control': 'public, max-age=3600'
           }
         });
       }
       
-      // Get the navbar and footer
-      const [navbar, footer] = await Promise.all([
-        fetchComponent('/TopNavBar.html'),
-        fetchComponent('/footer.html')
-      ]);
-      
-      if (!navbar || !footer) {
-        throw new Error('Could not load page template components');
-      }
-      
-      // Create a placeholder content block (this would be replaced by service binding later)
-      const locationContent = `
-        <div class="main-content">
-          <div class="info-box">
-            <h1>Support Services Near ${postcode.toUpperCase()}</h1>
-            <p>This page will display gambling support services near your location.</p>
-            <p>In the future, this content will be dynamically loaded from a location service binding.</p>
-          </div>
-          
-          <div class="resources-grid">
-            <div class="resource-card">
-              <h3>Local Support Group</h3>
-              <p>Example support group near ${postcode.toUpperCase()}</p>
-              <p>Address: 123 Example Street</p>
-              <p>Phone: 01234 567890</p>
-            </div>
-            <div class="resource-card">
-              <h3>Counseling Center</h3>
-              <p>Example counseling service within 5 miles of ${postcode.toUpperCase()}</p>
-              <p>Address: 456 Example Road</p>
-              <p>Phone: 01234 567891</p>
-            </div>
-          </div>
-        </div>
-      `;
-      
-      // Assemble the complete page
-      const assembledPage = assemblePage(
-        navbar,
-        locationContent,
-        footer,
-        `ENOUGHGAMBLING - Support Services Near ${postcode.toUpperCase()}`
-      );
-      
-      // Return the assembled page
-      return new Response(assembledPage, {
+      // If we get here, we don't know how to handle the request
+      return new Response(generate404Page(), {
+        status: 404,
         headers: {
           'Content-Type': 'text/html',
           'Cache-Control': 'public, max-age=3600'
         }
       });
+      
+    } catch (error) {
+      // Log error and return 500 response
+      console.error(`Error handling request for ${pathname}:`, error);
+      return new Response('Internal Server Error', {
+        status: 500,
+        headers: {
+          'Content-Type': 'text/plain'
+        }
+      });
     }
-    
-    // If we get here, we don't know how to handle the request
-    return new Response(generate404Page(), {
-      status: 404,
-      headers: {
-        'Content-Type': 'text/html',
-        'Cache-Control': 'public, max-age=3600'
-      }
-    });
-    
-  } catch (error) {
-    // Log error and return 500 response
-    console.error(`Error handling request for ${pathname}:`, error);
-    return new Response('Internal Server Error', {
-      status: 500,
-      headers: {
-        'Content-Type': 'text/plain'
-      }
-    });
   }
-}
+};

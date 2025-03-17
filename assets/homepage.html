@@ -1,15 +1,22 @@
 
 <div class="hero-section split-layout">
     <div class="hero-content">
-        <h1>Fighting for Transparency in <span class="highlight">Gambling Reform</span></h1>
-        <p class="tagline">Data-driven advocacy for safer communities</p>
+        <h1>Data-Driven Reform for <span class="highlight">Safer Communities</span></h1>
+        <p class="tagline">Empowering change through transparency and action</p>
         <div class="cta-buttons">
             <button class="primary-btn">Take Action</button>
             <button class="secondary-btn">Explore Map</button>
         </div>
     </div>
-    <div class="map-preview" id="mini-map"></div>
+    <div class="map-preview" id="mini-map">
+        <!-- Map visualization will be loaded here -->
+    </div>
 </div>
+
+<section class="data-visualization">
+    <h2>Gambling Venue Concentration</h2>
+    <div class="visualization-container" id="venue-concentration"></div>
+</section>
 
 <section class="impact-stats">
     <div class="stat-grid">
@@ -34,20 +41,41 @@
 
 <section class="rights-assessment">
     <h2>Know Your Rights</h2>
-    <div id="rights-questionnaire"></div>
+    <div class="assessment-container">
+        <div id="rights-questionnaire" class="interactive-form"></div>
+        <div class="action-pathways"></div>
+    </div>
 </section>
 
-<section class="campaign-impact">
+<section class="map-tool-preview">
+    <h2>Explore Your Area</h2>
+    <div class="map-container">
+        <div id="preview-map" class="interactive-map"></div>
+        <div class="map-overlay">
+            <button class="primary-btn">Open Full Map Tool</button>
+        </div>
+    </div>
+</section>
+
+<section class="campaign-impact" data-parallax="scroll">
     <h2>Making Real Change</h2>
-    <div class="success-stories"></div>
+    <div class="success-stories-grid">
+        <!-- Success stories will be dynamically loaded -->
+    </div>
 </section>
 
 <section class="action-section">
-    <h2>Join the Movement</h2>
     <div class="action-container">
-        <form class="signup-form">
-            <input type="email" placeholder="Enter your email" />
-            <button type="submit" class="primary-btn">Get Involved</button>
-        </form>
+        <div class="email-signup">
+            <h2>Join the Movement</h2>
+            <form class="signup-form">
+                <input type="email" placeholder="Enter your email" required />
+                <button type="submit" class="primary-btn">Get Involved</button>
+            </form>
+        </div>
+        <div class="toolkit-download">
+            <h3>Download Our Toolkit</h3>
+            <button class="secondary-btn">Access Resources</button>
+        </div>
     </div>
 </section>

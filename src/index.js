@@ -804,17 +804,45 @@ export default {
       // User is authenticated, continue to render the inbox page
     }
     
+    // Handle debug endpoint for troubleshooting
+    if (pathname === '/debug-info') {
+      const debugInfo = {
+        pathname,
+        originalPathname: url.pathname,
+        comingSoon: env.COMING_SOON,
+        isOverrideParam: url.searchParams.has('override'),
+        isOverridePath: pathname.startsWith('/override/'),
+        env: Object.keys(env),
+      };
+      return new Response(JSON.stringify(debugInfo, null, 2), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+    
     // Check if the path uses the override mechanism
-    const isOverride = pathname.startsWith('/override/');
-    if (isOverride) {
+    const isOverride = pathname.startsWith('/override/') || url.searchParams.has('override');
+    
+    if (pathname.startsWith('/override/')) {
       // Remove the /override part from the pathname
-      pathname = pathname.replace('/override', '');
+      pathname = pathname.replace('/override/', '/');
+      if (pathname === '') pathname = '/';
     }
     
     // Check if we're in coming soon mode and not using override
     const comingSoon = env.COMING_SOON === 'TRUE';
     if (comingSoon && !isOverride) {
-      return new Response(generateComingSoonPage(), {
+      // Add a visible link to easily access the site with override
+      const comingSoonPage = generateComingSoonPage();
+      const overrideLink = `<div style="margin-top: 20px; padding: 10px; text-align: center;">
+        <p><a href="/?override=true" style="color: #666; text-decoration: underline; font-size: 0.9rem;">
+          Access the site (development preview)
+        </a></p>
+      </div>`;
+      
+      // Insert before closing body tag
+      const enhancedPage = comingSoonPage.replace('</body>', `${overrideLink}</body>`);
+      
+      return new Response(enhancedPage, {
         status: 200,
         headers: {
           'Content-Type': 'text/html',

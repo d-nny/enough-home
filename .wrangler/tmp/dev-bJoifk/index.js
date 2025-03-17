@@ -746,13 +746,35 @@ var src_default = {
         });
       }
     }
-    const isOverride = pathname.startsWith("/override/");
-    if (isOverride) {
-      pathname = pathname.replace("/override", "");
+    if (pathname === "/debug-info") {
+      const debugInfo = {
+        pathname,
+        originalPathname: url.pathname,
+        comingSoon: env.COMING_SOON,
+        isOverrideParam: url.searchParams.has("override"),
+        isOverridePath: pathname.startsWith("/override/"),
+        env: Object.keys(env)
+      };
+      return new Response(JSON.stringify(debugInfo, null, 2), {
+        headers: { "Content-Type": "application/json" }
+      });
+    }
+    const isOverride = pathname.startsWith("/override/") || url.searchParams.has("override");
+    if (pathname.startsWith("/override/")) {
+      pathname = pathname.replace("/override/", "/");
+      if (pathname === "")
+        pathname = "/";
     }
     const comingSoon = env.COMING_SOON === "TRUE";
     if (comingSoon && !isOverride) {
-      return new Response(generateComingSoonPage(), {
+      const comingSoonPage = generateComingSoonPage();
+      const overrideLink = `<div style="margin-top: 20px; padding: 10px; text-align: center;">
+        <p><a href="/?override=true" style="color: #666; text-decoration: underline; font-size: 0.9rem;">
+          Access the site (development preview)
+        </a></p>
+      </div>`;
+      const enhancedPage = comingSoonPage.replace("</body>", `${overrideLink}</body>`);
+      return new Response(enhancedPage, {
         status: 200,
         headers: {
           "Content-Type": "text/html",

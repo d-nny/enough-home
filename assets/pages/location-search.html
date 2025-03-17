@@ -1,0 +1,45 @@
+<header class="page-header">
+    <h1>Find Support Services Near You</h1>
+    <p class="page-description">Search for gambling support services, counselors, and treatment centers in your area.</p>
+</header>
+
+<section class="main-content">
+    <div class="info-box">
+        <h2>Local Support Makes a Difference</h2>
+        <p>Having access to local support services can make a significant difference in your recovery journey. Face-to-face meetings and local support groups provide a sense of community and accountability that's hard to replicate online.</p>
+    </div>
+    
+    <div class="search-container">
+        <h2>Find Services By Postcode</h2>
+        <form id="location-search-form" class="postcode-form" action="/location/" method="GET">
+            <div class="form-group">
+                <label for="postcode">Enter your postcode:</label>
+                <input type="text" id="postcode" name="postcode" placeholder="e.g. SE1 9GT" required>
+                <button type="submit" class="primary-btn">Search</button>
+            </div>
+            <p class="form-hint">We'll show you support services within a 10-mile radius of your location.</p>
+        </form>
+    </div>
+    
+    <div class="national-services">
+        <h2>National Services</h2>
+        <p>Can't find local services or prefer remote support? We also have a comprehensive list of national services available to everyone in the UK.</p>
+        <a href="/national-services" class="secondary-btn">View National Services</a>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('location-search-form');
+    
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const postcode = document.getElementById('postcode').value.trim();
+        if (!postcode) return;
+        
+        // Redirect to the location page with the postcode
+        window.location.href = '/location/' + postcode.replace(/\s+/g, '');
+    });
+});
+</script>

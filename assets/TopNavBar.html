@@ -1,91 +1,41 @@
-    <nav class="navbar">
+<a href="#main-content" class="skip-link">Skip to main content</a>
+<div class="contact-bar">
+    <div class="container">
+        <span>Crisis Support: 1800 858 858</span>
+        <span>Email: help@enoughgambling.org</span>
+    </div>
+</div>
+
+<nav class="main-nav">
+    <div class="nav-container">
         <div class="logo">
-            <span class="black">ENOUGH</span><span class="red">GAMBLING</span>
+            <a href="/"><span class="black">ENOUGH</span><span class="red">GAMBLING</span></a>
         </div>
-        <div class="nav-right">
-            <button class="login-btn" id="login-btn">LOGIN</button>
-            <div class="burger" id="burger-btn">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-            </div>
-        </div>
-    </nav>
-    
-    <!-- Login Modal -->
-    <div id="login-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div id="email-step" class="auth-step">
-                <h2>Login to Your Account</h2>
-                <p>Enter your email address to receive a login code</p>
-                <form id="email-form">
-                    <div class="form-group">
-                        <input type="email" id="login-email" placeholder="your@email.com" required>
-                    </div>
-                    <button type="submit" class="auth-btn">Send Code</button>
-                </form>
-                <div class="auth-message" id="email-message"></div>
-            </div>
-            
-            <div id="code-step" class="auth-step hidden">
-                <h2>Enter Verification Code</h2>
-                <p>We've sent a 6-digit code to your email</p>
-                <form id="code-form">
-                    <div class="form-group code-inputs">
-                        <input type="text" maxlength="1" class="code-input" required>
-                        <input type="text" maxlength="1" class="code-input" required>
-                        <input type="text" maxlength="1" class="code-input" required>
-                        <input type="text" maxlength="1" class="code-input" required>
-                        <input type="text" maxlength="1" class="code-input" required>
-                        <input type="text" maxlength="1" class="code-input" required>
-                    </div>
-                    <button type="submit" class="auth-btn">Verify</button>
-                </form>
-                <div class="auth-message" id="code-message"></div>
-                <p class="resend-link">Didn't receive a code? <a href="#" id="resend-code">Resend</a></p>
-            </div>
-            
-            <div id="profile-step" class="auth-step hidden">
-                <h2>Complete Your Profile</h2>
-                <p>Please provide a username to complete your account setup</p>
-                <form id="profile-form">
-                    <div class="form-group">
-                        <input type="text" id="username" placeholder="Username" required>
-                    </div>
-                    <button type="submit" class="auth-btn">Complete Setup</button>
-                </form>
-                <div class="auth-message" id="profile-message"></div>
-            </div>
+
+        <button class="mobile-menu-toggle" aria-label="Toggle Menu">
+            <span></span><span></span><span></span>
+        </button>
+
+        <div class="nav-menu">
+            <ul class="main-menu">
+                <li><a href="/">Home</a></li>
+                <li class="has-submenu">
+                    <a href="/map">Map Explorer</a>
+                </li>
+                <li class="has-submenu">
+                    <a href="/policy">Policy Reform</a>
+                </li>
+                <li class="has-submenu">
+                    <a href="/rights">Your Rights</a>
+                </li>
+                <li class="has-submenu">
+                    <a href="/support">Support</a>
+                </li>
+                <li>
+                    <a href="/about">About Us</a>
+                </li>
+            </ul>
+            <button class="take-action-btn">Take Action</button>
         </div>
     </div>
-    
-    <div class="dropdown-menu" id="dropdown-menu">
-        <ul>
-            <li class="has-submenu">Resources
-                <ul class="submenu">
-                    <li><a href="/resources">All Resources</a></li>
-                    <li><a href="/self-assessment">Self-Assessment Tools</a></li>
-                    <li><a href="/self-exclusion">Self-Exclusion Programs</a></li>
-                    <li><a href="/financial-recovery">Financial Help</a></li>
-                </ul>
-            </li>
-            <li class="has-submenu">Support
-                <ul class="submenu">
-                    <li><a href="/support-groups">Support Groups</a></li>
-                    <li><a href="/find-counselor">Find a Counselor</a></li>
-                    <li><a href="/for-families">Family Support</a></li>
-                </ul>
-            </li>
-            <li class="has-submenu">Locations
-                <ul class="submenu">
-                    <li><a href="/location-search">Search by Postcode</a></li>
-                    <li><a href="/national-services">National Services</a></li>
-                </ul>
-            </li>
-            <li><a href="/about">About Us</a></li>
-            <li><a href="/contact">Contact</a></li>
-        </ul>
-    </div>
-    
-    <script src="/scripts/script.js"></script>
+</nav>

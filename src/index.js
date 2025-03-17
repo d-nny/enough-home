@@ -200,7 +200,7 @@ function assemblePage(navbar, content, footer, title = 'ENOUGHGAMBLING - Support
  * Main event handler for the worker
  */
 addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request));
+  event.respondWith(handleRequest(event.request, event.env));
 });
 
 /**
@@ -264,9 +264,10 @@ async function fetchComponent(path) {
 /**
  * Handle the request
  * @param {Request} request - The incoming request
+ * @param {Object} env - Environment variables
  * @returns {Response} - The response
  */
-async function handleRequest(request) {
+async function handleRequest(request, env) {
   const url = new URL(request.url);
   let pathname = url.pathname;
   

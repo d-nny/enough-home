@@ -1,4 +1,4 @@
-name = "enough-outbound-emails"
+name = "enough-home"
 main = "src/index.js"
 compatibility_date = "2023-07-10"
 
@@ -8,10 +8,4 @@ bucket = "./assets"
 [vars]
 COMING_SOON = "FALSE"  # Set to "TRUE" to enable coming soon mode
 
-[env.production]
-[env.production.vars]
-COMING_SOON = "FALSE"
 
-[env.staging]
-[env.staging.vars]
-COMING_SOON = "TRUE"

@@ -369,10 +369,10 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
         min-height: 100vh;
         text-align: center;
         background-color: #f5f5f5;
+        padding: 2rem 1rem;
       }
       .logo {
         margin-bottom: 2rem;
@@ -393,22 +393,52 @@
         max-width: 600px;
         padding: 0 20px;
       }
-      .countdown {
-        margin-top: 2rem;
-        font-weight: bold;
-        font-size: 1.5rem;
+      .support-resources {
+        margin-top: 3rem;
+        width: 100%;
+        max-width: 900px;
       }
-      .contact {
-        margin-top: 2rem;
-        font-size: 0.9rem;
+      .support-resources h2 {
+        margin-bottom: 2rem;
+        color: #333;
+      }
+      .resources-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        width: 100%;
+      }
+      .resource-card {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 1.5rem;
+        text-align: left;
+        transition: transform 0.3s ease;
+      }
+      .resource-card:hover {
+        transform: translateY(-5px);
+      }
+      .resource-logo {
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+      }
+      .resource-logo img {
+        max-height: 80px;
+        max-width: 100%;
+        object-fit: contain;
+      }
+      .resource-card h3 {
+        color: #333;
+        margin-bottom: 0.5rem;
+      }
+      .resource-card p {
         color: #666;
-      }
-      .contact a {
-        color: #FF0000;
-        text-decoration: none;
-      }
-      .contact a:hover {
-        text-decoration: underline;
+        font-size: 0.9rem;
+        line-height: 1.5;
       }
     </style>
   </head>
@@ -421,8 +451,50 @@
       <p>We're working hard to bring you resources and support for those affected by problem gambling.</p>
       <p>Our site is under construction but will be launching soon.</p>
     </div>
-    <div class="contact">
-      Need immediate help? Contact the National Gambling Helpline: <a href="tel:18005224700">1-800-522-4700</a>
+    
+    <div class="support-resources">
+      <h2>Gambling Support Resources</h2>
+      <div class="resources-grid">
+        <div class="resource-card">
+          <div class="resource-logo">
+            <img src="/images/chapter-one.svg" alt="Chapter One - Gambling Support">
+          </div>
+          <h3>Chapter One - Gambling Support</h3>
+          <p>Provides specialized counseling and therapy services for individuals affected by problem gambling with a personalized recovery approach.</p>
+        </div>
+        
+        <div class="resource-card">
+          <div class="resource-logo">
+            <img src="/images/gamlearn.png" alt="GamLearn">
+          </div>
+          <h3>GamLearn</h3>
+          <p>An educational platform offering free resources to understand gambling addiction through interactive courses and informational materials.</p>
+        </div>
+        
+        <div class="resource-card">
+          <div class="resource-logo">
+            <img src="/images/gamfam.png" alt="GamFam">
+          </div>
+          <h3>GamFam</h3>
+          <p>Specializes in supporting families and loved ones of problem gamblers, providing guidance on effective communication and establishing healthy boundaries.</p>
+        </div>
+        
+        <div class="resource-card">
+          <div class="resource-logo">
+            <img src="/images/gamban.jpg" alt="Gamban">
+          </div>
+          <h3>Gamban</h3>
+          <p>Offers powerful software that blocks access to gambling websites and applications across all devices, providing an essential tool for recovery.</p>
+        </div>
+        
+        <div class="resource-card">
+          <div class="resource-logo">
+            <img src="/images/talkbanstop.png" alt="TalkBanStop">
+          </div>
+          <h3>TalkBanStop</h3>
+          <p>A partnership initiative combining free gambling blocking software, expert counseling services, and practical self-exclusion for comprehensive support.</p>
+        </div>
+      </div>
     </div>
   </body>
   </html>`;

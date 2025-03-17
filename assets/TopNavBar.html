@@ -3,7 +3,7 @@
             <span class="black">ENOUGH</span><span class="red">GAMBLING</span>
         </div>
         <div class="nav-right">
-            <button class="login-btn">LOGIN</button>
+            <button class="login-btn" id="login-btn">LOGIN</button>
             <div class="burger" id="burger-btn">
                 <div class="line"></div>
                 <div class="line"></div>
@@ -11,6 +11,54 @@
             </div>
         </div>
     </nav>
+    
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="email-step" class="auth-step">
+                <h2>Login to Your Account</h2>
+                <p>Enter your email address to receive a login code</p>
+                <form id="email-form">
+                    <div class="form-group">
+                        <input type="email" id="login-email" placeholder="your@email.com" required>
+                    </div>
+                    <button type="submit" class="auth-btn">Send Code</button>
+                </form>
+                <div class="auth-message" id="email-message"></div>
+            </div>
+            
+            <div id="code-step" class="auth-step hidden">
+                <h2>Enter Verification Code</h2>
+                <p>We've sent a 6-digit code to your email</p>
+                <form id="code-form">
+                    <div class="form-group code-inputs">
+                        <input type="text" maxlength="1" class="code-input" required>
+                        <input type="text" maxlength="1" class="code-input" required>
+                        <input type="text" maxlength="1" class="code-input" required>
+                        <input type="text" maxlength="1" class="code-input" required>
+                        <input type="text" maxlength="1" class="code-input" required>
+                        <input type="text" maxlength="1" class="code-input" required>
+                    </div>
+                    <button type="submit" class="auth-btn">Verify</button>
+                </form>
+                <div class="auth-message" id="code-message"></div>
+                <p class="resend-link">Didn't receive a code? <a href="#" id="resend-code">Resend</a></p>
+            </div>
+            
+            <div id="profile-step" class="auth-step hidden">
+                <h2>Complete Your Profile</h2>
+                <p>Please provide a username to complete your account setup</p>
+                <form id="profile-form">
+                    <div class="form-group">
+                        <input type="text" id="username" placeholder="Username" required>
+                    </div>
+                    <button type="submit" class="auth-btn">Complete Setup</button>
+                </form>
+                <div class="auth-message" id="profile-message"></div>
+            </div>
+        </div>
+    </div>
     
     <div class="dropdown-menu" id="dropdown-menu">
         <ul>

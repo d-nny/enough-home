@@ -670,6 +670,43 @@ export default {
     const url = new URL(request.url);
     let pathname = url.pathname;
     
+    // Handle outbound-emails route for authentication system
+    if (pathname.startsWith('/outbound-emails')) {
+      // Pass the request to the outbound-emails service if available
+      if (env.OUTBOUND_EMAILS) {
+        try {
+          return await env.OUTBOUND_EMAILS.fetch(request);
+        } catch (error) {
+          console.error('Error forwarding to outbound-emails service:', error);
+          return new Response(JSON.stringify({ error: 'Failed to send email' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+          });
+        }
+      } else {
+        console.error('OUTBOUND_EMAILS service binding not available');
+        // For testing purposes, log the request body
+        if (request.method === 'POST') {
+          try {
+            const body = await request.clone().json();
+            console.log('Email request body:', body);
+          } catch (e) {
+            console.error('Failed to parse email request:', e);
+          }
+        }
+        
+        // Return mock success response for testing
+        return new Response(JSON.stringify({ 
+          success: true, 
+          mock: true,
+          message: 'OUTBOUND_EMAILS binding not available - this is a mock response' 
+        }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+    }
+    
     // Check if the path uses the override mechanism
     const isOverride = pathname.startsWith('/override/');
     if (isOverride) {

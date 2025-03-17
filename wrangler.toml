@@ -9,6 +9,10 @@ bucket = "./assets"
 [observability.logs]
 enabled = true
 
+# Service binding for outbound emails
+[[services]]
+binding = "OUTBOUND_EMAILS"
+service = "enough-outbound-emails"
+
 [vars]
 COMING_SOON = "TRUE"  # Set to "TRUE" to enable coming soon mode
-

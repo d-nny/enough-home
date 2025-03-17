@@ -90,6 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
             profileDropdown.className = 'profile-dropdown';
             profileDropdown.innerHTML = `
                 <ul>
+                    <li><a href="/inbox">Email Inbox</a></li>
                     <li><a href="/profile">My Profile</a></li>
                     <li><a href="/settings">Settings</a></li>
                     <li><a href="#" id="logout-btn">Logout</a></li>

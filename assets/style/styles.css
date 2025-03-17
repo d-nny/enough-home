@@ -611,6 +611,80 @@ body {
     display: block;
 }
 
+/* Inbox Page Styles */
+.inbox-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.inbox-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.inbox-header h1 {
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 2rem;
+}
+
+.inbox-header p {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.inbox-frame {
+    width: 100%;
+    height: calc(100vh - 250px);
+    min-height: 500px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background-color: #fff;
+}
+
+/* Inbox Notification Styles */
+.inbox-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background-color: #333;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    max-width: 300px;
+    animation: slideIn 0.3s ease forwards;
+}
+
+.inbox-notification.fade-out {
+    animation: fadeOut 0.5s ease forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .footer-bottom {

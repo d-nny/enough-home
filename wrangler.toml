@@ -9,10 +9,16 @@ bucket = "./assets"
 [observability.logs]
 enabled = true
 
-# Service binding for outbound emails
+# Service bindings
 [[services]]
 binding = "OUTBOUND_EMAILS"
 service = "enough-outbound-emails"
 
+[[services]]
+binding = "INBOX_UI"
+service = "enough-inbox-ui"
+
+# Environment variables
 [vars]
+INBOX_UI_URL = "https://enough-inbox-ui.workers.dev"
 COMING_SOON = "TRUE"  # Set to "TRUE" to enable coming soon mode

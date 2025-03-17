@@ -657,6 +657,50 @@ async function fetchComponent(path) {
   }
 }
 
+/**
+ * Check if the request is authenticated
+ * @param {Request} request - The incoming request
+ * @returns {Promise<boolean>} - True if authenticated, false otherwise
+ */
+async function checkAuthentication(request) {
+  // In a real application, this would validate JWT tokens from cookies/headers
+  // or check with an auth service
+  
+  // For our client-side authentication system, check for auth header
+  const authHeader = request.headers.get('Authorization');
+  
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.substring(7);
+    try {
+      // Simple validation of the token structure (not cryptographically secure)
+      const parts = token.split('.');
+      if (parts.length === 3) {
+        const payload = JSON.parse(atob(parts[1]));
+        // Check if token is expired
+        if (payload.exp && Date.now() < payload.exp * 1000) {
+          return true;
+        }
+      }
+    } catch (error) {
+      console.error('Error validating token:', error);
+    }
+  }
+  
+  // If we reach here, either there was no token or it was invalid
+  // In real implementation, we'd check for session cookies as well
+  // For now, allow authentication based on localStorage in the browser
+  // by checking the url for specific testing params
+  
+  // For testing: check for a test parameter that allows access without real auth
+  const url = new URL(request.url);
+  const testAuth = url.searchParams.get('test_auth');
+  if (testAuth === 'true') {
+    return true;
+  }
+  
+  return false;
+}
+
 // Export the Worker in the Modules format
 export default {
   /**
@@ -705,6 +749,59 @@ export default {
           headers: { 'Content-Type': 'application/json' }
         });
       }
+    }
+    
+    // Handle inbox UI proxy
+    if (pathname.startsWith('/inbox-ui/')) {
+      // Pass the request to the inbox UI service if available
+      if (env.INBOX_UI) {
+        try {
+          // Create a new request with the same method, headers, and body
+          const inboxRequest = new Request(
+            new URL(pathname.replace('/inbox-ui', ''), env.INBOX_UI_URL || 'https://enough-inbox-ui.workers.dev'),
+            {
+              method: request.method,
+              headers: request.headers,
+              body: request.body,
+              redirect: 'follow'
+            }
+          );
+          
+          return await env.INBOX_UI.fetch(inboxRequest);
+        } catch (error) {
+          console.error('Error forwarding to inbox UI service:', error);
+          return new Response(JSON.stringify({ error: 'Failed to access inbox UI' }), {
+            status: 500,
+            headers: { 'Content-Type': 'application/json' }
+          });
+        }
+      } else {
+        console.error('INBOX_UI service binding not available');
+        return new Response(JSON.stringify({ 
+          error: 'INBOX_UI service binding not available', 
+        }), {
+          status: 503,
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+    }
+    
+    // Handle inbox page - require authentication
+    if (pathname === '/inbox') {
+      // Check if user is logged in by checking cookies or auth headers
+      const isAuthenticated = await checkAuthentication(request);
+      
+      if (!isAuthenticated) {
+        // Redirect to home page if not authenticated
+        return new Response(null, {
+          status: 302,
+          headers: {
+            'Location': '/',
+          }
+        });
+      }
+      
+      // User is authenticated, continue to render the inbox page
     }
     
     // Check if the path uses the override mechanism

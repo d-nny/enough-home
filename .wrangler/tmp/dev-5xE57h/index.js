@@ -2,7 +2,7 @@
   var __defProp = Object.defineProperty;
   var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
-  // .wrangler/tmp/bundle-YnNd3i/checked-fetch.js
+  // .wrangler/tmp/bundle-eqwEgP/checked-fetch.js
   var urls = /* @__PURE__ */ new Set();
   function checkURL(request, init) {
     const url = request instanceof URL ? request : new URL(
@@ -271,7 +271,7 @@
   }, "jsonError");
   var middleware_miniflare3_json_error_default = jsonError;
 
-  // .wrangler/tmp/bundle-YnNd3i/middleware-insertion-facade.js
+  // .wrangler/tmp/bundle-eqwEgP/middleware-insertion-facade.js
   __facade_registerInternal__([middleware_ensure_req_body_drained_default, middleware_miniflare3_json_error_default]);
 
   // src/index.js
